@@ -47,11 +47,16 @@ class Database:
                 status TEXT DEFAULT 'pending'
             )''')
     
-    # Новости
+    # ========== НОВОСТИ ==========
     def get_all_news(self):
         with self.get_connection() as conn:
             rows = conn.execute('SELECT * FROM news ORDER BY id DESC').fetchall()
             return [dict(row) for row in rows]
+    
+    def get_news(self, news_id):
+        with self.get_connection() as conn:
+            row = conn.execute('SELECT * FROM news WHERE id = ?', (news_id,)).fetchone()
+            return dict(row) if row else None
     
     def create_news(self, data):
         with self.get_connection() as conn:
@@ -80,11 +85,16 @@ class Database:
         with self.get_connection() as conn:
             conn.execute('DELETE FROM news WHERE id = ?', (news_id,))
     
-    # Вакансии
+    # ========== ВАКАНСИИ ==========
     def get_all_vacancies(self):
         with self.get_connection() as conn:
             rows = conn.execute('SELECT * FROM vacancies ORDER BY id DESC').fetchall()
             return [dict(row) for row in rows]
+    
+    def get_vacancy(self, vacancy_id):
+        with self.get_connection() as conn:
+            row = conn.execute('SELECT * FROM vacancies WHERE id = ?', (vacancy_id,)).fetchone()
+            return dict(row) if row else None
     
     def create_vacancy(self, data):
         with self.get_connection() as conn:
@@ -111,7 +121,7 @@ class Database:
         with self.get_connection() as conn:
             conn.execute('DELETE FROM vacancies WHERE id = ?', (vacancy_id,))
     
-    # Отзывы
+    # ========== ОТЗЫВЫ ==========
     def get_published_reviews(self):
         with self.get_connection() as conn:
             rows = conn.execute('SELECT * FROM reviews WHERE status = "approved" ORDER BY id DESC').fetchall()
@@ -121,6 +131,11 @@ class Database:
         with self.get_connection() as conn:
             rows = conn.execute('SELECT * FROM reviews WHERE status = "pending" ORDER BY id DESC').fetchall()
             return [dict(row) for row in rows]
+    
+    def get_review(self, review_id):
+        with self.get_connection() as conn:
+            row = conn.execute('SELECT * FROM reviews WHERE id = ?', (review_id,)).fetchone()
+            return dict(row) if row else None
     
     def create_review(self, data):
         with self.get_connection() as conn:
@@ -139,9 +154,9 @@ class Database:
     
     def reject_review(self, review_id):
         with self.get_connection() as conn:
-
             conn.execute('DELETE FROM reviews WHERE id = ?', (review_id,))
-            
-            def delete_review(self, review_id):
-    with self.get_connection() as conn:
-        conn.execute('DELETE FROM reviews WHERE id = ?', (review_id,))
+    
+    # 👇 ЭТОТ МЕТОД НУЖНО ДОБАВИТЬ
+    def delete_review(self, review_id):
+        with self.get_connection() as conn:
+            conn.execute('DELETE FROM reviews WHERE id = ?', (review_id,))
