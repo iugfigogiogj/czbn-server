@@ -139,4 +139,9 @@ class Database:
     
     def reject_review(self, review_id):
         with self.get_connection() as conn:
+
             conn.execute('DELETE FROM reviews WHERE id = ?', (review_id,))
+            
+            def delete_review(self, review_id):
+    with self.get_connection() as conn:
+        conn.execute('DELETE FROM reviews WHERE id = ?', (review_id,))
